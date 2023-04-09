@@ -7,5 +7,4 @@ const matrix = new Array(matrixSize).fill(null).map(() =>
 );
 
 const game = new GameEngine(matrixSize, matrix)
-game.initController();
 game.play();
