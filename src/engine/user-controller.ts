@@ -5,7 +5,7 @@ export class UserController {
 
     }
 
-    initController() {
+    public initController(): void {
         document.addEventListener('keydown', (e) => {
             switch (e.key.toLowerCase()) {
                 case 'w':

@@ -1,4 +1,6 @@
+import { Character } from "../engine/character";
 import { Camera } from "./camera";
+import { TileRenderer } from "./tile-renderer";
 
 export class SceneRenderer {
     canvas;
@@ -9,6 +11,7 @@ export class SceneRenderer {
     matrixSize: number;
     mapSize: number;
     viewSize: number;
+    tilerRenderer: TileRenderer;
     camera;
 
     constructor(matrixSize: number, tileSize: number, mapSize: number) {
@@ -21,7 +24,8 @@ export class SceneRenderer {
         this.viewSize = this.tileSize * this.visibleTiles;
 
         this.camera = new Camera(this.viewSize);
-    
+        this.tilerRenderer = new TileRenderer(tileSize);
+
         this.canvas.width = this.viewSize;
         this.canvas.height = this.viewSize;
     }
@@ -31,36 +35,33 @@ export class SceneRenderer {
         const startY = Math.floor(y / this.tileSize) - Math.floor(this.visibleTiles / 2) - 1;
         const endX = startX + this.visibleTiles + 2;
         const endY = startY + this.visibleTiles + 2;
-    
+
+        this.ctx.save();
+        this.ctx.translate(-this.camera.centerX, -this.camera.centerY);
+
         for (let i = startX; i <= endX; i++) {
             for (let j = startY; j <= endY; j++) {
                 if (i >= 0 && i < this.matrixSize && j >= 0 && j < this.matrixSize) {
-                    this.ctx.save();
-                    this.ctx.translate(-this.camera.centerX, -this.camera.centerY);
-                    this.drawTile(i, j, tilesMatrix[i][j]);
-                    this.ctx.restore();
+                    this.tilerRenderer.draw(i, j, tilesMatrix[i][j], this.ctx);
                 }
             }
         }
-    }
-    
-    private drawTile(x: number, y: number, tile: any): void {
-        this.ctx.fillStyle = tile.type === 'grass' ? 'green' : 'gray';
-        this.ctx.fillRect(x * this.tileSize, y * this.tileSize, this.tileSize, this.tileSize);
+
+        this.ctx.restore();
     }
 
-    public draw(tilesMatrix: any): void {    
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);            
-        this.drawVisibleTiles(this.camera.x, this.camera.y, tilesMatrix);        
+    public draw(tilesMatrix: any): void {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.drawVisibleTiles(this.camera.x, this.camera.y, tilesMatrix);
     }
-    
-    public drawPlayer(player: any): void {
+
+    public drawCharacter(character: Character): void {
         this.ctx.fillStyle = 'blue';
         this.ctx.fillRect(
-            player.x - this.camera.centerX,
-            player.y - this.camera.centerY,
-            player.width,
-            player.height
+            character.x - this.camera.centerX,
+            character.y - this.camera.centerY,
+            character.width,
+            character.height
         );
     }
 }

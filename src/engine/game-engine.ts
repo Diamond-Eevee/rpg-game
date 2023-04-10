@@ -26,7 +26,7 @@ export class GameEngine {
         this.userController.initController();
     }
 
-    gameLoop(timestamp: any) {
+    private gameLoop(timestamp: any): void {
         const delta = (timestamp - this.lastTime) / 1000;
         this.lastTime = timestamp;
 
@@ -34,12 +34,12 @@ export class GameEngine {
 
         this.sceneRenderer.camera.follow(this.characterController.character);
         this.sceneRenderer.draw(this.matrix);
-        this.sceneRenderer.drawPlayer(this.characterController.character);
+        this.sceneRenderer.drawCharacter(this.characterController.character);
 
         requestAnimationFrame(this.gameLoop.bind(this));
     }
 
-    play() {
+    public play(): void {
         requestAnimationFrame(this.gameLoop.bind(this));
     }
 }

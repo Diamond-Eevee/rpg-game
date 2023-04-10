@@ -1,3 +1,5 @@
+import { IMapObject } from "../engine/map-object-model";
+
 export class Camera {
     x = 0;
     y = 0;
@@ -11,7 +13,7 @@ export class Camera {
         this.height = viewSize;
     }
 
-    follow(object: any) {
+    public follow(object: IMapObject): void {
         this.x = object.x;
         this.y = object.y;
         this.centerX = object.x - (this.width - object.width) / 2;

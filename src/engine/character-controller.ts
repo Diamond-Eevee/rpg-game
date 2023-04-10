@@ -5,7 +5,7 @@ export class CharacterController {
 
     }
     
-    setPlayerTarget(dx: any, dy: any) {
+    public setPlayerTarget(dx: number, dy: number): void {
         const newX = this.character.targetX + dx * this.tileSize;
         const newY = this.character.targetY + dy * this.tileSize;
     
@@ -15,11 +15,11 @@ export class CharacterController {
         }
     }
 
-    private lerp(start: any, end: any, t: any) {
+    private lerp(start: number, end: number, t: number): number {
         return start * (1 - t) + end * t;
     }
 
-    updatePosition(delta: any) {
+    public updatePosition(delta: number): void {
         const t = this.character.speed * delta;
         this.character.x = this.lerp(this.character.x, this.character.targetX, t);
         this.character.y = this.lerp(this.character.y, this.character.targetY, t);

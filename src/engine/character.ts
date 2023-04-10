@@ -1,4 +1,6 @@
-export class Character {
+import { IMapObject } from "./map-object-model";
+
+export class Character implements IMapObject {
     x = 0;
     y = 0;
     targetX = 0;
